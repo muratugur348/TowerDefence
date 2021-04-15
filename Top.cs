@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Top : MonoBehaviour
 {
+    public ArrayList askerler = new ArrayList();
     oyunKontrol oyunKontrolScript;
     GameObject asker;
     Animator anim;
     public Sprite yukarisprite, asagisprite;
     int menzildekiasker = 0, maxIndex = 0;
-    ArrayList askerler;
     float max = 0,mermisayac=0;
     void Start()
     {
@@ -21,21 +21,12 @@ public class Top : MonoBehaviour
     
     void Update()
     {
-        print(menzildekiasker + "menzilde");
         if (menzildekiasker != 0)
         {
+            print(askerler.Count + name);
             anim.enabled = true;
             max = 0;
-            for (int i = 0; i < oyunKontrolScript.askerler.Count; i++)
-            {
-                if(float.Parse((oyunKontrolScript.askerler[i].ToString()).Substring(0, 4))> max)
-                {
-                    max = float.Parse(oyunKontrolScript.askerler[i].ToString().Substring(0, 4));
-                    maxIndex = i;
-                }
-            }
-            asker = GameObject.Find(oyunKontrolScript.askerler[maxIndex].ToString().Substring(0, 4).ToString());
-            print(asker.ToString());
+            asker = (GameObject)askerler[0];
             if ((asker.transform.position.x < transform.position.x && asker.transform.position.y > transform.position.y)
             || (asker.transform.position.x > transform.position.x && asker.transform.position.y < transform.position.y))
             {
@@ -49,13 +40,13 @@ public class Top : MonoBehaviour
             if ((asker.transform.position.y < transform.position.y))
             {
                 anim.Play("topasagi");
-                if (asker.transform.position.x<transform.position.x)
-                        GetComponent<SpriteRenderer>().flipX = false;
-                    else
-                        GetComponent<SpriteRenderer>().flipX = true;
-                
+                if (asker.transform.position.x < transform.position.x)
+                    GetComponent<SpriteRenderer>().flipX = false;
+                else
+                    GetComponent<SpriteRenderer>().flipX = true;
+
             }
-            else if((asker.transform.position.y > transform.position.y))
+            else if ((asker.transform.position.y > transform.position.y))
             {
                 anim.Play("topyukari");
                 if (asker.transform.position.x < transform.position.x)
@@ -63,23 +54,6 @@ public class Top : MonoBehaviour
                 else
                     GetComponent<SpriteRenderer>().flipX = false;
             }
-            mermisayac += Time.deltaTime;
-            if (mermisayac>3)
-            {
-                oyunKontrolScript.askerler.RemoveAt(maxIndex);
-                DestroyImmediate(asker);
-                mermisayac = 0;
-                menzildekiasker--;
-            }
-            if ((asker.transform.position.y < transform.position.y))
-                {
-                    GetComponent<SpriteRenderer>().sprite = asagisprite;
-                }
-                else
-                {
-                    GetComponent<SpriteRenderer>().sprite = yukarisprite;
-
-                }
         }
         else
         {
@@ -89,12 +63,14 @@ public class Top : MonoBehaviour
     
     public void OnTriggerEnter2D(Collider2D collision)
     {
+        askerler.Add(collision.gameObject);
         anim.enabled = true;
         menzildekiasker++;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        askerler.Remove(collision.gameObject);
         oyunKontrolScript.askerler.RemoveAt(maxIndex);
         menzildekiasker--;
 
