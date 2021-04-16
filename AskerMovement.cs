@@ -6,7 +6,7 @@ public class AskerMovement : MonoBehaviour
 {
     Rigidbody2D fizik;
     string yon = "sol";
-    float aldigiyol = 0;
+    public float aldigiyol = 0;
     void Start()
     {
 
@@ -53,5 +53,9 @@ public class AskerMovement : MonoBehaviour
             yon = "sag";
             GetComponent<SpriteRenderer>().flipX = false;
         }
+    }
+    public float getAldigiYol()
+    {
+        return aldigiyol;
     }
 }
