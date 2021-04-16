@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +6,7 @@ public class oyunKontrol : MonoBehaviour
 {
     public ArrayList askerler = new ArrayList();
     public GameObject askerprefab, altobje;
-    int dalgaaskersayisi = 10;
+    int dalgaaskersayisi = 3;
     float sayac = 0;
     // Start is called before the first frame update
     void Start()
@@ -24,7 +24,7 @@ public class oyunKontrol : MonoBehaviour
 
             sayac = 0;
         }
-        print(askerler.Count);
+        
     }
     IEnumerator askerOlustur(int askersayisi)
     {
@@ -35,6 +35,7 @@ public class oyunKontrol : MonoBehaviour
                 Quaternion.identity);
             olusturulan.transform.parent = altobje.transform;
             askerler.Add(olusturulan);
+            
             yield return new WaitForSeconds(1);
         }
     }
